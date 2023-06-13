@@ -43,6 +43,12 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+
+    const usersCollection = client.db("SportifyDB").collection("users");
+    const classesCollection = client.db("SportifyDB").collection("classes");
+    const instructorCollection = client.db("SportifyDB").collection("instructor");
+    const selectClsCollection = client.db("SportifyDB").collection("selectClass");
+    
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
