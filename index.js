@@ -66,6 +66,18 @@ async function run() {
         next();
     }
 
+    // class file api......
+    app.get('/classes', async (req, res) => {
+        const result = await classesCollection.find().toArray();
+        res.send(result);
+    })
+
+    // instructor file api......
+    app.get('/instructor', async (req, res) => {
+        const result = await instructorCollection.find().toArray();
+        res.send(result);
+    })
+
     // create payment intent
     app.post('/create-payment-intent', verifyJWT, async (req, res) => {
         const {price} = req.body;
