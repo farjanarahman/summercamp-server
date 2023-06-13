@@ -66,12 +66,27 @@ async function run() {
         next();
     }
 
+    // create payment intent
+    app.post('/create-payment-intent', verifyJWT, async (req, res) => {
+        const {price} = req.body;
+        const amount = price*100;
+        console.log(amount);
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: amount,
+            currency: 'usd',
+            payment_method_types: ['card']
+        });
+        res.send({
+            clientSecret: paymentIntent.client_secret
+        })
+    })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
