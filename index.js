@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const port = process.env.PORT || 5000;
 require('dotenv').config()
+const jwt = require('jsonwebtoken');
+const port = process.env.PORT || 5000;
 
 //middleware
 app.use(cors());
@@ -48,7 +49,14 @@ async function run() {
     const classesCollection = client.db("SportifyDB").collection("classes");
     const instructorCollection = client.db("SportifyDB").collection("instructor");
     const selectClsCollection = client.db("SportifyDB").collection("selectClass");
-    
+
+    app.post('/jwt', (req, res) => {
+        const user = req.body;
+        const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
+
+        res.send({ token })
+    })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
