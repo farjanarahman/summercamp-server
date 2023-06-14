@@ -133,6 +133,12 @@ async function run() {
         res.send(result);
     })
 
+    app.post('/instructor', async (req, res) => {
+        const item = req.body;
+        const result = await instructorCollection.insertOne(item);
+        res.send(result);
+    })
+
     // create payment intent
     app.post('/create-payment-intent', verifyJWT, async (req, res) => {
         const {price} = req.body;
