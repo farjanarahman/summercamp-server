@@ -139,6 +139,30 @@ async function run() {
         res.send(result);
     })
 
+    // select class collection api....
+    app.get('/selectcls', verifyJWT, async (req, res) => {
+        const email = req.query.email;
+        if (!email) {
+            res.send([]);
+        }
+
+        const decodedEmail = req.decoded.email;
+        if (email !== decodedEmail) {
+            return res.status(403).send({ error: true, message: 'forbidden access' })
+        }
+
+        const query = { email: email };
+        const result = await selectClsCollection.find(query).toArray();
+        res.send(result);
+    })
+
+    app.post('/selectcls', async (req, res) => {
+        const item = req.body;
+        const result = await selectClsCollection.insertOne(item);
+        res.send(result);
+    })
+
+
     // create payment intent
     app.post('/create-payment-intent', verifyJWT, async (req, res) => {
         const {price} = req.body;
