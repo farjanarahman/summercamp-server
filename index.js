@@ -92,6 +92,35 @@ async function run() {
         res.send(result);
     })
 
+    // security layer: verifyJWT
+    // email same
+    // check admin
+    app.get('/users/admin/:email', verifyJWT, async (req, res) => {
+        const email = req.params.email;
+
+        if (req.decoded.email !== email) {
+            res.send({ admin: false })
+        }
+
+        const query = { email: email }
+        const user = await usersCollection.findOne(query);
+        const result = { admin: user?.role === 'admin' }
+        res.send(result);
+    })
+
+    // admin api........
+    app.patch('/users/admin/:id', async (req, res) => {
+        const id = req.params.id;
+        const filter = { _id: new ObjectId(id) };
+        const updateDoc = {
+            $set: {
+                role: 'admin'
+            },
+        };
+        const result = await usersCollection.updateOne(filter, updateDoc);
+        res.send(result);
+    })
+
     // class file api......
     app.get('/classes', async (req, res) => {
         const result = await classesCollection.find().toArray();
