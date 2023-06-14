@@ -51,12 +51,12 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const usersCollection = client.db("SportifyDB").collection("users");
-    const classesCollection = client.db("SportifyDB").collection("classes");
-    const instructorCollection = client.db("SportifyDB").collection("instructor");
-    // const selectClsCollection = client.db("SportifyDB").collection("selectClass");
-    const addtocartCollection = client.db('SportifyDB').collection('addtocart');
-    const paymentCollection=client.db('SportifyDB').collection('paymentSuccessList');
+    const usersCollection = client.db("summerCamp").collection("users");
+    const classesCollection = client.db("summerCamp").collection("classes");
+    const instructorCollection = client.db("summerCamp").collection("instructor");
+    // const selectClsCollection = client.db("Sportify").collection("selectClass");
+    const addtocartCollection = client.db('summerCamp').collection('addtocart');
+    const paymentCollection=client.db('summerCamp').collection('paymentSuccessList');
 
 
     app.post('/jwt', (req, res) => {
@@ -103,47 +103,6 @@ async function run() {
         next();
       };
 
-    //  // users related api
-    //  app.get('/users', verifyJWT, verifyAdmin,  async (req, res) => {
-    //     const result = await usersCollection.find().toArray();
-    //     res.send(result);
-    // })
-
-    // // users file api......
-    // app.post('/users', async (req, res) => {
-    //     const user = req.body;
-    //     const query = { email: user.email };
-    //     const existingUser = await usersCollection.findOne(query);
-    //     if (existingUser) {
-    //         return res.send({ message: 'user already exist' })
-    //     }
-    //     const result = await usersCollection.insertOne(user);
-    //     res.send(result);
-    // })
-
-    // app.delete('/users/:id', async (req, res) => {
-    //     const id = req.params.id;
-    //     const query = { _id: new ObjectId(id) };
-    //     const result = await usersCollection.deleteOne(query);
-    //     res.send(result);
-    // })
-
-    // // security layer: verifyJWT
-    // // email same
-    // // check admin
-    // app.get('/users/admin/:email', verifyJWT, async (req, res) => {
-    //     const email = req.params.email;
-
-    //     if (req.decoded.email !== email) {
-    //         res.send({ admin: false })
-    //     }
-
-    //     const query = { email: email }
-    //     const user = await usersCollection.findOne(query);
-    //     const result = { admin: user?.role === 'admin' }
-    //     res.send(result);
-    // })
-
      // check instructor and verify instructor
      app.get("/users/instructor/:email", verifyJWT, async (req, res) => {
         const email = req.params.email;
@@ -155,25 +114,6 @@ async function run() {
         const result = { instructor: user?.role === "instructor" };
         res.send(result);
       });
-
-    // // admin api........
-    // app.patch('/users/admin/:id', async (req, res) => {
-    //     const id = req.params.id;
-    //     const filter = { _id: new ObjectId(id) };
-    //     const updateDoc = {
-    //         $set: {
-    //             role: 'admin'
-    //         },
-    //     };
-    //     const result = await usersCollection.updateOne(filter, updateDoc);
-    //     res.send(result);
-    // })
-
-    // // class file api......
-    // app.get('/classes', async (req, res) => {
-    //     const result = await classesCollection.find().toArray();
-    //     res.send(result);
-    // })
 
     app.put('/users/:email',async(req,res)=>{
         const email=req.params.email;
@@ -425,3 +365,7 @@ app.get('/', (req, res) =>{
 app.listen(port, () =>{
     console.log(`Sportify is running on port ${port}`)
 })
+
+
+
+
