@@ -73,6 +73,18 @@ async function run() {
         res.send(result);
     })
 
+    // users file api......
+    app.post('/users', async (req, res) => {
+        const user = req.body;
+        const query = { email: user.email };
+        const existingUser = await usersCollection.findOne(query);
+        if (existingUser) {
+            return res.send({ message: 'user already exist' })
+        }
+        const result = await usersCollection.insertOne(user);
+        res.send(result);
+    })
+
     // class file api......
     app.get('/classes', async (req, res) => {
         const result = await classesCollection.find().toArray();
