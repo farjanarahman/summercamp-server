@@ -162,6 +162,13 @@ async function run() {
         res.send(result);
     })
 
+    app.delete('/selectcls/:id', async (req, res) => {
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id) };
+        const result = await selectClsCollection.deleteOne(query);
+        res.send(result);
+    })
+
 
     // create payment intent
     app.post('/create-payment-intent', verifyJWT, async (req, res) => {
