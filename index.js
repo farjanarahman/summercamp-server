@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 require('dotenv').config()
 const jwt = require('jsonwebtoken');
+const stripe = require('stripe');
 const port = process.env.PORT || 5000;
 
 //middleware
@@ -65,6 +66,12 @@ async function run() {
         }
         next();
     }
+
+     // users related api
+     app.get('/users', verifyJWT, verifyAdmin,  async (req, res) => {
+        const result = await usersCollection.find().toArray();
+        res.send(result);
+    })
 
     // class file api......
     app.get('/classes', async (req, res) => {
